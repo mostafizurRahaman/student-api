@@ -21,7 +21,7 @@ type Config struct {
 	HttpServer  `yaml:"http_server"`
 }
 
-func MustLoad() {
+func MustLoad() *Config {
 
 	var configPath string
 
