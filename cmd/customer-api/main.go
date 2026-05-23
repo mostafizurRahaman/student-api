@@ -13,6 +13,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/mostafizurRahaman/customer-api/internal/config"
+	"github.com/mostafizurRahaman/customer-api/internal/http/handlers/customers"
 )
 
 func main() {
@@ -27,9 +28,7 @@ func main() {
 
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /api", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to student api......."))
-	})
+	router.HandleFunc("POST /api/customers", customers.New())
 
 	//  Setup database :
 
