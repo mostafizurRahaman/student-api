@@ -24,13 +24,20 @@ func New() http.HandlerFunc {
 
 		// ?. Parse the json:
 		if errors.Is(err, io.EOF) {
-			response.WriteJson(w, http.StatusBadRequest, err.Error())
+			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(fmt.Errorf("empty body")))
 			return
 		}
 
+		if err != nil {
+			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
+			return
+		}
+
+		// Validate request:
+
 		fmt.Println(customer)
 
-		response.WriteJson(w, http.StatusOK, customer)
+		response.WriteJson(w, http.StatusOK, map[string]string{"status": "ok"})
 
 	}
 
