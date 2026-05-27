@@ -28,6 +28,7 @@ func New() http.HandlerFunc {
 			return
 		}
 
+		// Handle Student error 
 		if err != nil {
 			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
 			return
