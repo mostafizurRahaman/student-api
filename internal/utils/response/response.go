@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 )
-
+// Response writter function : 
 func WriteJson(w http.ResponseWriter, status int, data interface{}) error {
 
 	w.Header().Set("Content-Type", "application/json")
