@@ -16,8 +16,22 @@ func WriteJson(w http.ResponseWriter, status int, data interface{}) error {
 
 // Generic response type:
 
-type Response struct {
-	Status  int
+const (
+	StatusOk    = "Success"
+	StatusError = "Error"
+)
+
+type ErrorResponse struct {
+	Status  string
 	Success bool
 	Error   string
+}
+
+func Response(err error) ErrorResponse {
+
+	return ErrorResponse{
+		Status:  StatusOk,
+		Success: false,
+		Error:   err.Error(),
+	}
 }
