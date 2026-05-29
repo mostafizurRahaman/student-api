@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/mostafizurRahaman/student-api/internal/config"
+	student "github.com/mostafizurRahaman/student-api/internal/http/handlers/students"
 )
 
 func main() {
@@ -20,10 +21,7 @@ func main() {
 	// Setup router:
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-
-		w.Write([]byte("Hello world!"))
-	})
+	router.HandleFunc("POST /api/students", student.New())
 
 	// Setup Server
 	server := http.Server{
@@ -46,9 +44,9 @@ func main() {
 
 	}()
 
+	slog.Info("Server is running now", slog.String("host", cfg.Addr))
 
-
-	//  
+	//
 	<-done
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
