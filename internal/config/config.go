@@ -9,48 +9,44 @@ import (
 )
 
 type HttpServer struct {
-	Address string `yaml:"address" env:"ADDRESS" env-required:"true" default:"localhost:8080"`
-	timeout uint16 `yaml:"timeout" env:"TIMEOUT" env-required:"true" env-default:"5000"`
+	Addr string `yaml:"address" env:"ADDRESS" env-required:"true" env-default:"localhost:8080"`
 }
 
-// ! We can add anotation into struct
-// ! This are called struct tags : `yaml:""`
 type Config struct {
 	Env         string `yaml:"env" env:"ENV" env-required:"true" env-default:"production"`
-	StoragePath string `yaml:"storage_path" env:"STORAGE_PATH" env-required:"true" env-default:"storage/storage.db"`
+	StoragePath string `yaml:"storage_path" env:"STORAGE_PATH" env-required:"true"`
 	HttpServer  `yaml:"http_server"`
 }
 
-func MustLoad() *Config {
+func MustLoad() Config {
 
 	var configPath string
 
 	configPath = os.Getenv("CONFIG_PATH")
 
-	if configPath == "" { 
-		flags := flag.String("config", "", "path to the configuration file")
+	if configPath == "" {
+
+		flags := flag.String("config", "", "Please provide env path.")
 
 		flag.Parse()
 
 		configPath = *flags
 
-		if configPath == ""{ 
-			log.Fatal("Cofig path is not set")
+		if configPath == "" {
+			log.Fatal("Environment not provieded!")
 		}
 	}
 
-	if _, err := os.Stat(configPath); os.IsNotExist(err) { 
-		log.Fatalf("Cofig path doesn't exist: %s", configPath)
-	}	
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		log.Fatalf("Env file not found %s", err.Error())
+	}
 
 	var cfg Config
 
- 		err:=	cleanenv.ReadConfig(configPath, &cfg)
-
-	if err != nil {
-		log.Fatalf("can not read config file : %s", err.Error())
+	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
+		log.Fatalf("Failed to load env file %s", err.Error())
 	}
 
-	return &cfg
+	return cfg
 
 }
