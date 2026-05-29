@@ -24,13 +24,13 @@ func New() http.HandlerFunc {
 		// ? Decode here and store into student variable
 		err := json.NewDecoder(r.Body).Decode(&student)
 		if errors.Is(err, io.EOF) {
-			response.WriteJson(w, http.StatusBadGateway, response.ErrorResponse(fmt.Errorf("empty error")))
+			response.WriteJson(w, http.StatusBadGateway, response.GeneralError(fmt.Errorf("empty error")))
 			return
 		}
 
 		// ? If error is EOF and not nil :
 		if err != nil {
-			response.WriteJson(w, http.StatusBadGateway, response.ErrorResponse(err))
+			response.WriteJson(w, http.StatusBadGateway, response.GeneralError(err))
 			return
 		}
 

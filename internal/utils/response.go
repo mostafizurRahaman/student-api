@@ -6,7 +6,7 @@ import (
 )
 
 // ?? Create a struct for response
-type GenericResponse struct {
+type ErrorResponse struct {
 	Status StatusType `json:"status"`
 	Error  string     `json:"error"`
 }
@@ -35,9 +35,9 @@ func WriteJson(w http.ResponseWriter, status int, data interface{}) error {
 
 // ?? Create a generic for response type:
 
-func ErrorResponse(err error) GenericResponse {
+func GeneralError(err error) ErrorResponse {
 
-	return GenericResponse{
+	return ErrorResponse{
 		Status: StatusError,
 		Error:  err.Error(),
 	}
